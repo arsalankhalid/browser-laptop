@@ -102,7 +102,7 @@ let loadAppStatePromise = SessionStore.loadAppState()
 
 // Some settings must be set right away on startup, those settings should be handled here.
 loadAppStatePromise.then((initialImmutableState) => {
-  const {HARDWARE_ACCELERATION_ENABLED, SMOOTH_SCROLL_ENABLED, SEND_CRASH_REPORTS, SITE_ISOLATION_ENABLED} = require('../js/constants/settings')
+  const {SMOOTH_SCROLL_ENABLED, SEND_CRASH_REPORTS, SITE_ISOLATION_ENABLED} = require('../js/constants/settings')
   const initialSettings = initialImmutableState.get('settings')
   if (getSetting(SITE_ISOLATION_ENABLED, initialSettings) === true) {
     // This needs to happen as early as possible :O
@@ -112,9 +112,6 @@ loadAppStatePromise.then((initialImmutableState) => {
   CrashHerald.init(getSetting(SEND_CRASH_REPORTS, initialSettings))
 
   telemetry.setCheckpointAndReport('state-loaded')
-  if (getSetting(HARDWARE_ACCELERATION_ENABLED, initialSettings) === false) {
-    app.disableHardwareAcceleration()
-  }
 
   if (getSetting(SMOOTH_SCROLL_ENABLED, initialSettings) === false) {
     app.commandLine.appendSwitch('disable-smooth-scrolling')
